@@ -47,7 +47,7 @@ public class AppController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Return an error message as a JSON object for AJAX handling
+            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body(Map.of("error", "Encryption Failed: An unexpected error occurred."));
         }
@@ -77,7 +77,7 @@ public class AppController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Return an error message for wrong password or corrupt file
+            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body(Map.of("error", "Decryption Failed: Invalid password or corrupt file."));
         }
