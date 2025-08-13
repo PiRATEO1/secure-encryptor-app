@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure File Encryptor</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Secure Encryptor</h1>
+    </header>
+
+    <main>
+        <div class="upload-container">
+            <h2>Encrypt or Decrypt Files</h2>
+            <p>Protect your files with strong, end-to-end encryption.</p>
+
+            <!-- This form no longer needs action/method attributes -->
+            <form id="upload-form" enctype="multipart/form-data">
+
+                <!-- STEP 1: File selection area -->
+                <div id="file-select-panel">
+                    <div class="file-input-wrapper">
+                        <label for="file-upload" class="file-select-btn">Select File</label>
+                        <input id="file-upload" name="file" type="file" required>
+                    </div>
+                    <p>or drop files here</p>
+                </div>
+
+                <!-- STEP 2: Options panel (hidden initially) -->
+                <div id="options-panel" class="hidden">
+                    <p id="selected-file-name"></p>
+                    <div class="form-group">
+                        <label for="password">Enter Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="action-buttons">
+                        <!-- Buttons are now type="button" to prevent default submission -->
+                        <button type="button" id="encrypt-btn" class="encrypt-btn">Encrypt</button>
+                        <button type="button" id="decrypt-btn" class="decrypt-btn">Decrypt</button>
+                    </div>
+                    <div class="back-link">
+                        <a href="#" id="back-button">&larr; Choose a different file</a>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- ADDED: Status message area -->
+            <div id="status-message" class="status-message"></div>
+        </div>
+    </main>
+
+    <!-- NEW: JavaScript for AJAX submission and feedback -->
+    <script>
+        const fileUploadInput = document.getElementById('file-upload');
+        const fileSelectPanel = document.getElementById('file-select-panel');
+        const optionsPanel = document.getElementById('options-panel');
+        const selectedFileNameEl = document.getElementById('selected-file-name');
+        const backButton = document.getElementById('back-button');
+        const encryptBtn = document.getElementById('encrypt-btn');
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const uploadForm = document.getElementById('upload-form');
+        const statusMessageEl = document.getElementById('status-message');
+
+        fileUploadInput.addEventListener('change', function() {
+            if (fileUploadInput.files.length > 0) {
+                fileSelectPanel.classList.add('hidden');
+                selectedFileNameEl.textContent = 'File: ' + fileUploadInput.files[0].name;
+                optionsPanel.classList.remove('hidden');
+                statusMessageEl.innerHTML = ''; // Clear old messages
+            }
+        });
+
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            optionsPanel.classList.add('hidden');
+            fileSelectPanel.classList.remove('hidden');
+            fileUploadInput.value = '';
+            statusMessageEl.innerHTML = ''; // Clear old messages
+        });
+
+        encryptBtn.addEventListener('click', () => handleFormSubmit('/encrypt'));
+        decryptBtn.addEventListener('click', () => handleFormSubmit('/decrypt'));
+
+        async function handleFormSubmit(endpoint) {
+            const formData = new FormData(uploadForm);
+            
+            // Show a "processing" message
+            showStatus('Processing...', 'info');
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    // SUCCESS: The server sent back a file
+                    const blob = await response.blob();
+                    const header = response.headers.get('Content-Disposition');
+                    const parts = header.split(';');
+                    const filename = parts[1].split('=')[1].replace(/"/g, '');
+
+                    // Create a link and trigger the download
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showStatus('Success! Your file has been downloaded.', 'success');
+                } else {
+                    // ERROR: The server sent back an error message
+                    const errorData = await response.json();
+                    showStatus(errorData.error || 'An unknown error occurred.', 'error');
+                }
+            } catch (error) {
+                showStatus('Network error. Could not connect to the server.', 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            statusMessageEl.innerHTML = message;
+            statusMessageEl.className = 'status-message ' + type; // e.g., 'status-message success'
+        }
+    </script>
+</body>
+</html>
