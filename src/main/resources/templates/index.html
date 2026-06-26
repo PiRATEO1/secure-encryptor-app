@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,10 +17,10 @@
             <h2>Encrypt or Decrypt Files</h2>
             <p>Protect your files with strong, end-to-end encryption.</p>
 
-            <!-- This form no longer needs action/method attributes -->
+            
             <form id="upload-form" enctype="multipart/form-data">
 
-                <!-- STEP 1: File selection area -->
+                
                 <div id="file-select-panel">
                     <div class="file-input-wrapper">
                         <label for="file-upload" class="file-select-btn">Select File</label>
@@ -29,7 +29,7 @@
                     <p>or drop files here</p>
                 </div>
 
-                <!-- STEP 2: Options panel (hidden initially) -->
+                
                 <div id="options-panel" class="hidden">
                     <p id="selected-file-name"></p>
                     <div class="form-group">
@@ -37,7 +37,7 @@
                         <input type="password" id="password" name="password" required>
                     </div>
                     <div class="action-buttons">
-                        <!-- Buttons are now type="button" to prevent default submission -->
+                        
                         <button type="button" id="encrypt-btn" class="encrypt-btn">Encrypt</button>
                         <button type="button" id="decrypt-btn" class="decrypt-btn">Decrypt</button>
                     </div>
@@ -47,7 +47,7 @@
                 </div>
             </form>
             
-            <!-- ADDED: Status message area -->
+          
             <div id="status-message" class="status-message"></div>
         </div>
     </main>
