@@ -1,94 +1,361 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure File Encryptor</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div class="background-animation">
+        <div class="floating-node n1"></div>
+        <div class="floating-node n2"></div>
+        <div class="floating-node n3"></div>
+        <div class="floating-node n4"></div>
+        <div class="floating-node n5"></div>
+        <div class="floating-node n6"></div>
+        <div class="floating-node n7"></div>
+        <div class="floating-node n8"></div>
+        <div class="particle-track"></div>
+        <div class="particle-track"></div>
+        <div class="particle-track"></div>
+        <div class="particle-track"></div>
+        <div class="particle-track"></div>
+    </div>
 
     <header>
-        <h1>Secure Encryptor</h1>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>SecureVault</span>
+            </div>
+            <nav>
+                <a href="encrypt.html" class="nav-link active">Encrypt</a>
+                <a href="index.html" class="nav-link">Home</a>
+            </nav>
+        </div>
     </header>
 
     <main>
         <div class="upload-container">
-            <h2>Encrypt or Decrypt Files</h2>
-            <p>Protect your files with strong, end-to-end encryption.</p>
-
             
-            <form id="upload-form" enctype="multipart/form-data">
 
-                
-                <div id="file-select-panel">
-                    <div class="file-input-wrapper">
-                        <label for="file-upload" class="file-select-btn">Select File</label>
-                        <input id="file-upload" name="file" type="file" required>
+            <h2 class="gradient-text">Secure File Encryption</h2>
+            <p class="subtitle">Military-grade protection for your sensitive files</p>
+
+            <form id="upload-form" enctype="multipart/form-data">
+                <div id="file-select-panel" class="panel">
+                    <label for="file-upload" class="drop-zone">
+                        <div class="drop-zone-content">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <span class="drop-text">Click to browse or drag & drop</span>
+                            <span class="drop-hint">Supports all file types • Max 100MB</span>
+                        </div>
+                    </label>
+                    <input id="file-upload" name="file" type="file" required>
+
+                    <div class="recent-files">
+                        <p class="recent-title">Recent files</p>
+                        <div class="recent-item" onclick="document.getElementById('file-upload').click()">
+                            <div class="file-icon"><i class="fas fa-file-alt"></i></div>
+                            <span>document.pdf</span>
+                        </div>
+                        <div class="recent-item" onclick="document.getElementById('file-upload').click()">
+                            <div class="file-icon"><i class="fas fa-image"></i></div>
+                            <span>photo.jpg</span>
+                        </div>
                     </div>
-                    <p>or drop files here</p>
                 </div>
 
-                
-                <div id="options-panel" class="hidden">
-                    <p id="selected-file-name"></p>
+                <div id="options-panel" class="panel hidden">
+                    <div class="file-card">
+                        <div class="file-info">
+                            <i class="fas fa-file-alt" id="file-icon-display"></i>
+                            <div class="file-details">
+                                <p id="selected-file-name" class="filename"></p>
+                                <p class="filesize" id="file-size"></p>
+                            </div>
+                        </div>
+                        <div class="encryption-badge">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="password">Enter Password:</label>
-                        <input type="password" id="password" name="password" required>
+                        <label for="password">
+                            <i class="fas fa-key"></i>
+                            Encryption Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" required placeholder="Enter a secure password...">
+                            <button type="button" class="toggle-password" id="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strength-fill"></div>
+                            </div>
+                            <span class="strength-text" id="strength-text"></span>
+                        </div>
                     </div>
+
                     <div class="action-buttons">
-                        
-                        <button type="button" id="encrypt-btn" class="encrypt-btn">Encrypt</button>
-                        <button type="button" id="decrypt-btn" class="decrypt-btn">Decrypt</button>
+                        <button type="button" id="encrypt-btn" class="action-btn encrypt-action">
+                            <i class="fas fa-lock"></i>
+                            <span>Encrypt</span>
+                        </button>
+                        <button type="button" id="decrypt-btn" class="action-btn decrypt-action">
+                            <i class="fas fa-unlock"></i>
+                            <span>Decrypt</span>
+                        </button>
                     </div>
+
                     <div class="back-link">
-                        <a href="#" id="back-button">&larr; Choose a different file</a>
+                        <a href="#" id="back-button">
+                            <i class="fas fa-arrow-left"></i>
+                            Choose a different file
+                        </a>
                     </div>
                 </div>
             </form>
-            
-          
-            <div id="status-message" class="status-message"></div>
+
+            <div id="status-message" class="status-message">
+                <div class="spinner" id="spinner"></div>
+                <span id="status-text"></span>
+            </div>
+
+            <div id="success-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Operation Complete!</h3>
+                    <p id="modal-message">Your file has been encrypted successfully.</p>
+                    <button type="button" class="modal-close" id="modal-close">
+                        <span>Continue</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- NEW: JavaScript for AJAX submission and feedback -->
     <script>
         const fileUploadInput = document.getElementById('file-upload');
         const fileSelectPanel = document.getElementById('file-select-panel');
         const optionsPanel = document.getElementById('options-panel');
         const selectedFileNameEl = document.getElementById('selected-file-name');
+        const fileSizeEl = document.getElementById('file-size');
+        const fileIconDisplay = document.getElementById('file-icon-display');
         const backButton = document.getElementById('back-button');
         const encryptBtn = document.getElementById('encrypt-btn');
         const decryptBtn = document.getElementById('decrypt-btn');
         const uploadForm = document.getElementById('upload-form');
         const statusMessageEl = document.getElementById('status-message');
+        const statusText = document.getElementById('status-text');
+        const spinner = document.getElementById('spinner');
+        const mainIcon = document.getElementById('main-icon');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        const strengthFill = document.getElementById('strength-fill');
+        const strengthText = document.getElementById('strength-text');
+        const modal = document.getElementById('success-modal');
+        const modalClose = document.getElementById('modal-close');
+        const dropZone = document.querySelector('.drop-zone');
 
-        fileUploadInput.addEventListener('change', function() {
-            if (fileUploadInput.files.length > 0) {
+        let currentFile = null;
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+            const docExts = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'];
+            const codeExts = ['js', 'html', 'css', 'py', 'java', 'cpp', 'json', 'xml'];
+
+            if (imageExts.includes(ext)) return 'fa-file-image';
+            if (docExts.includes(ext)) return 'fa-file-pdf';
+            if (codeExts.includes(ext)) return 'fa-file-code';
+            if (ext === 'zip' || ext === 'rar' || ext === '7z') return 'fa-file-archive';
+            if (ext === 'mp3' || ext === 'wav') return 'fa-file-audio';
+            if (ext === 'mp4' || ext === 'avi' || ext === 'mov') return 'fa-file-video';
+            return 'fa-file-alt';
+        }
+
+        function evaluatePasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            return strength;
+        }
+
+        function updateStrengthIndicator() {
+            const password = passwordInput.value;
+            if (!password) {
+                strengthFill.style.width = '0%';
+                strengthText.textContent = '';
+                return;
+            }
+
+            const strength = evaluatePasswordStrength(password);
+            const colors = ['#dc3545', '#fd7e14', '#ffc107', '#28a745', '#20c997'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+
+            strengthFill.style.width = (strength * 20) + '%';
+            strengthFill.style.backgroundColor = colors[strength - 1] || '#ccc';
+            strengthText.textContent = labels[strength] || '';
+            strengthText.style.color = colors[strength - 1] || '#333';
+        }
+
+        function animateLock(action) {
+            if (action === 'encrypt') {
+                mainIcon.className = 'fas fa-lock';
+                document.querySelector('.lock-ring').style.borderColor = '#00ff88';
+            } else {
+                mainIcon.className = 'fas fa-lock-open';
+                document.querySelector('.lock-ring').style.borderColor = '#00d4ff';
+            }
+            mainIcon.style.animation = 'none';
+            mainIcon.offsetHeight;
+            mainIcon.style.animation = 'pulse 0.6s ease-out';
+        }
+
+        function showStatus(message, type, showSpinner = false) {
+            spinner.style.display = showSpinner ? 'inline-block' : 'none';
+            statusText.textContent = message;
+            statusMessageEl.className = 'status-message visible ' + type;
+        }
+
+        function hideStatus() {
+            statusMessageEl.className = 'status-message';
+        }
+
+        function switchPanel(showOptions) {
+            if (showOptions) {
                 fileSelectPanel.classList.add('hidden');
-                selectedFileNameEl.textContent = 'File: ' + fileUploadInput.files[0].name;
-                optionsPanel.classList.remove('hidden');
-                statusMessageEl.innerHTML = ''; // Clear old messages
+                setTimeout(() => {
+                    optionsPanel.classList.remove('hidden');
+                    optionsPanel.style.animation = 'slideUp 0.4s ease-out';
+                }, 300);
+            } else {
+                optionsPanel.style.animation = 'slideDown 0.3s ease-out';
+                setTimeout(() => {
+                    optionsPanel.classList.add('hidden');
+                    setTimeout(() => {
+                        fileSelectPanel.classList.remove('hidden');
+                        fileSelectPanel.style.animation = 'slideUp 0.3s ease-out';
+                    }, 300);
+                }, 300);
+            }
+        }
+
+        function updateFileCard() {
+            if (!currentFile) return;
+            selectedFileNameEl.textContent = currentFile.name;
+            fileSizeEl.textContent = formatFileSize(currentFile.size);
+            fileIconDisplay.className = 'fas ' + getFileIcon(currentFile.name);
+        }
+
+        fileUploadInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                currentFile = file;
+                updateFileCard();
+                switchPanel(true);
+                hideStatus();
+            }
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.querySelector('.drop-zone-content').classList.add('drag-over');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.querySelector('.drop-zone-content').classList.remove('drag-over');
+            });
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                fileUploadInput.files = files;
+                const event = new Event('change');
+                fileUploadInput.dispatchEvent(event);
             }
         });
 
         backButton.addEventListener('click', function(e) {
             e.preventDefault();
-            optionsPanel.classList.add('hidden');
-            fileSelectPanel.classList.remove('hidden');
+            switchPanel(false);
+            currentFile = null;
             fileUploadInput.value = '';
-            statusMessageEl.innerHTML = ''; // Clear old messages
+            hideStatus();
+            animateLock('neutral');
         });
 
-        encryptBtn.addEventListener('click', () => handleFormSubmit('/encrypt'));
-        decryptBtn.addEventListener('click', () => handleFormSubmit('/decrypt'));
+        togglePasswordBtn.addEventListener('click', function() {
+            const icon = togglePasswordBtn.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
 
-        async function handleFormSubmit(endpoint) {
+        passwordInput.addEventListener('input', updateStrengthIndicator);
+
+        encryptBtn.addEventListener('click', () => handleFormSubmit('/encrypt', 'encrypt'));
+        decryptBtn.addEventListener('click', () => handleFormSubmit('/decrypt', 'decrypt'));
+
+        async function handleFormSubmit(endpoint, action) {
+            const password = passwordInput.value.trim();
+            
+            if (!password) {
+                showStatus('Please enter a password.', 'error');
+                passwordInput.focus();
+                passwordInput.style.animation = 'shake 0.5s ease';
+                setTimeout(() => passwordInput.style.animation = '', 500);
+                return;
+            }
+
+            animateLock(action);
+
+            encryptBtn.disabled = true;
+            decryptBtn.disabled = true;
+
             const formData = new FormData(uploadForm);
             
-            // Show a "processing" message
-            showStatus('Processing...', 'info');
+            showStatus(action === 'encrypt' ? 'Encrypting your file...' : 'Decrypting your file...', 'info', true);
 
             try {
                 const response = await fetch(endpoint, {
@@ -97,35 +364,60 @@
                 });
 
                 if (response.ok) {
-                    // SUCCESS: The server sent back a file
                     const blob = await response.blob();
                     const header = response.headers.get('Content-Disposition');
-                    const parts = header.split(';');
-                    const filename = parts[1].split('=')[1].replace(/"/g, '');
+                    const parts = header ? header.split(';') : [];
+                    const filename = parts[1] ? parts[1].split('=')[1].replace(/"/g, '') : 'file';
 
-                    // Create a link and trigger the download
                     const link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
                     link.download = filename;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                    
+
                     showStatus('Success! Your file has been downloaded.', 'success');
+                    document.getElementById('modal-message').textContent = 
+                        action === 'encrypt' 
+                            ? '"' + filename + '" has been encrypted and downloaded.' 
+                            : '"' + filename + '" has been decrypted and downloaded.';
+                    setTimeout(() => {
+                        modal.classList.remove('hidden');
+                        modal.style.animation = 'fadeIn 0.3s ease-out';
+                    }, 800);
+
                 } else {
-                    // ERROR: The server sent back an error message
                     const errorData = await response.json();
                     showStatus(errorData.error || 'An unknown error occurred.', 'error');
                 }
             } catch (error) {
                 showStatus('Network error. Could not connect to the server.', 'error');
+            } finally {
+                encryptBtn.disabled = false;
+                decryptBtn.disabled = false;
             }
         }
 
-        function showStatus(message, type) {
-            statusMessageEl.innerHTML = message;
-            statusMessageEl.className = 'status-message ' + type; // e.g., 'status-message success'
-        }
+        modalClose.addEventListener('click', () => {
+            modal.style.animation = 'fadeOut 0.2s ease-out';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                switchPanel(false);
+                currentFile = null;
+                fileUploadInput.value = '';
+                passwordInput.value = '';
+                hideStatus();
+                animateLock('neutral');
+                updateStrengthIndicator();
+            }, 200);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelector('.upload-container').style.opacity = '1';
+                document.querySelector('.upload-container').style.transform = 'translateY(0)';
+            }, 100);
+        });
     </script>
 </body>
 </html>
